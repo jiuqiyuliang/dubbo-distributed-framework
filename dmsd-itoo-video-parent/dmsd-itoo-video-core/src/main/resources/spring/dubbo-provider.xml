@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="order" value="1"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+			<!-- 引入jdbc配置文件 -->
+                <value>classpath:db.properties</value>
+                <value>classpath:dubbo-server.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--start  dubbo-->
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="dmsd-itoo-video-provider"/>
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" check="false" subscribe="false" register=""/>
+
+    <!-- 用dubbo协议在20883端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20883"/>
+
+    <!-- 根据学生id查询课程名称的服务 -->
+    <bean id="courseFacade" class="com.dmsd.itoo.video.facade.impl.CourseFacadeImpl"/>
+    <!-- 声明需要暴露的服务接口 -->
+     <dubbo:service interface="com.dmsd.itoo.video.facade.CourseFacade"
+                    ref="courseFacade" group="${dubbo.video.group}" version="${dubbo.video.version}"/>
+ 
+</beans>

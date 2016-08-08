@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.dmsd</groupId>
+        <artifactId>dmsd-itoo-root</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../dmsd-itoo-root/pom.xml</relativePath>
+    </parent>
+
+
+    <artifactId>dmsd-itoo-easyui</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    
+    <!-- <name>Modular Wicket Warsaw Project</name> -->
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- 引入javaee的api,这样easyui的jsp页面,就不会报错 -->
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${javaee-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bull.javamelody</groupId>
+            <artifactId>javamelody-core</artifactId>
+            <version>${javamelody-core.version}</version>
+        </dependency>
+    </dependencies>
+</project>

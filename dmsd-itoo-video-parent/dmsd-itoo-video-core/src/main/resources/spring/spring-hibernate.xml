@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:bean="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <tx:annotation-driven/>
+    <bean:component-scan base-package="com.dmsd.itoo.base.dao.hibernate"/>
+
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动扫描value中配置的包路径中中带注解的类并完成映射 -->
+        <property name="packagesToScan" value="com.dmsd.itoo.video.entity"/>
+
+        <!--
+            <property name="mappingLocations"
+            value="classpath:tgb/lk/crm/model/*.hbm.xml" />
+        -->
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.generate_statistics">false</prop>
+                <prop key="hibernate.autoReconnect">true</prop>
+                <prop key="hibernate.jdbc.batch_size">500</prop>
+                <prop key="hibernate.connection.release_mode">auto</prop>
+                <!-- 开启二级缓存 -->
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <!-- 开启查询缓存 -->
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <!-- 高速缓存提供程序 -->
+                <!--<prop key="hibernate.cache.region.factory_class">-->
+                <!--net.sf.ehcache.hibernate.EhCacheRegionFactory-->
+                <!--</prop>-->
+                <prop key="hibernate.cache.region.factory_class">
+                    org.hibernate.cache.ehcache.EhCacheRegionFactory
+                </prop>
+                <!-- 指定缓存配置文件位置 -->
+                <prop key="hibernate.cache.provider_configuration_file_resource_path">
+                    ehcache.xml
+                </prop>
+                <!-- 强制Hibernate以更人性化的格式将数据存入二级缓存 -->
+                <prop key="hibernate.cache.use_structured_entries">true</prop>
+                <!-- Hibernate将收集有助于性能调节的统计数据 -->
+                <prop key="hibernate.generate_statistics">false</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>
