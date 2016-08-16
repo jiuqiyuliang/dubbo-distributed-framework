@@ -1,160 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>dmsd-itoo-root</artifactId>
-		<groupId>com.dmsd</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../dmsd-itoo-root/pom.xml</relativePath>
-	</parent>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.dmsd</groupId>
+    <artifactId>dmsd-itoo-root</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<artifactId>dmsd-itoo-tool</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	
-	<properties>
-		<mongo.version>2.9.3</mongo.version>
-		<!-- TODO -->
-		<net.sourceforge.jexcelapi.version>2.6.12</net.sourceforge.jexcelapi.version>
-	</properties>
+    <!-- 自定义Maven属性会被继承 -->
+    <properties>
+        <!-- 私服器地址 -->
+        <nexus.url>http://192.168.0.24:8081/nexus/content/repositories</nexus.url>
 
+        <!-- 构建项目时必须配置，用于maven中的文件拷贝 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-	<dependencies>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-
-		<!-- 转jsonjar包  -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson-mapper-asl.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${jackson-core.version}</version>
-		</dependency>
-
-		<!--<dependency>-->
-			<!--<groupId>org.codehaus.jackson</groupId>-->
-			<!--<artifactId>jackson-core-asl</artifactId>-->
-			<!--<version>${jackson-core-asl.version}</version>-->
-		<!--</dependency>-->
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson-databind.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>${jackson-jaxrs-json-provider.version}</version>
-		</dependency>
+        <!-- 单元测试版本 -->
+        <mockito-groovy-support.version>1.2</mockito-groovy-support.version>
+        <junit.version>4.11</junit.version>                        <!--junit单元测试 -->
 
 
-		<dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>fastjson</artifactId>
-		    <version>1.2.14</version>
-		</dependency>
+        <!-- springframework版本 -->
+        <springframework.version>4.2.4.RELEASE</springframework.version>
+        <commons-logging.version>1.2</commons-logging.version>
+        <javaee-api.version>6.0</javaee-api.version>
+        <aspectjweaver.version>1.8.2</aspectjweaver.version>
+        <commons-lang.version>2.5</commons-lang.version>
+        <aopalliance.version>1.0</aopalliance.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <spring.version>4.2.4.RELEASE</spring.version>
+        <spring-dao.version>2.0.8</spring-dao.version>
+
+        <!-- maven版本 -->
+        <!--工程打包自动添加时间戳后缀 -->
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>    <!-- 编译时的编码 -->
+        <maven.compiler.source>1.7</maven.compiler.source>            <!-- 编译源代码 jdk版本编译 -->
+        <maven.compiler.target>1.7</maven.compiler.target>            <!-- 编译源代码 版本 -->
+        <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>        <!-- 编译插件版本号控制 -->
+        <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>         <!-- 编译插件版本号控制 -->
+        <!-- 可以从 SVN 中获取版本号，并将其变成环境变量TODO -->
+        <maven-svn-revision-number-plugin.version>1.13</maven-svn-revision-number-plugin.version>
+        <maven-jar-plugin.version>2.5</maven-jar-plugin.version>            <!-- 打包jar插件的版本 -->
+        <maven-war-plugin.version>2.4</maven-war-plugin.version>            <!-- 打包war插件的版本 -->
+        <maven-ear-plugin.version>2.9.1</maven-ear-plugin.version>        <!-- 打包ear插件的版本 -->
+        <maven-source-plugin.version>2.4</maven-source-plugin.version>    <!-- 源码包插件的版本 -->
+        <maven-surefire-plugin.version>2.18</maven-surefire-plugin.version>    <!-- 单元测试插件的版本 -->
+        <maven-surefire-report-plugin.version>2.18</maven-surefire-report-plugin.version> <!-- 是site生成test报告的一个插件 -->
+        <maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>                <!-- 来生成帮助文档 -->
+        <maven-site-plugin.version>3.4
+        </maven-site-plugin.version>                         <!-- maven-site-plugin是一个负责为Java项目生成静态HTML网站的插件 -->
+        <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+        <maven-checkstyle-plugin.version>2.13</maven-checkstyle-plugin.version>  <!--CheckStyle提供了大部分功能都是对于代码规范的检查 -->
+        <findbugs-maven-plugin.version>3.0.0</findbugs-maven-plugin.version> <!--静态分析工具，检查类或者jar文件 -->
+
+        <!-- mybatis版本 -->
+        <mysql.version>5.1.26</mysql.version>
+        <!-- 数据库连接池 -->
+        <druid.version>1.0.20</druid.version>
+        <mybatis.version>3.3.1</mybatis.version>
+        <mybatis.spring.version>1.2.4</mybatis.spring.version>
+        <mybatis-generator-core.version>1.3.2</mybatis-generator-core.version>
+        <mapper.version>3.3.6</mapper.version>
+        <javax.annotation-api.version>1.2</javax.annotation-api.version>
+        <jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
 
 
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${commons-lang3.version}</version>
-		</dependency>
+        <!-- log4j版本 -->
+        <slf4j-api.version>1.6.1</slf4j-api.version>
+        <logback-classic.version>1.1.3</logback-classic.version>
+        <jcl-over-slf4j.version>1.6.1</jcl-over-slf4j.version>
+        <slf4j-nop.version>1.6.1</slf4j-nop.version>
+        <slf4j-jdk14.version>1.5.6</slf4j-jdk14.version>
+        <logback-classic.version>1.1.2</logback-classic.version>
+        <jcl-over-slf4j.version>1.6.1</jcl-over-slf4j.version>
+        <logback-ext-spring.version>0.1.1</logback-ext-spring.version>
+        <logback-core.version>1.1.2</logback-core.version>
+        <log4j.version>1.2.16</log4j.version>
 
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>${json-lib.version}</version>
-			<classifier>jdk15</classifier>
-		</dependency>
-
-
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${commons-codec.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>${javaee-api.version}</version>
-		</dependency>
+        <!-- webservice版本 -->
+        <javax.ws.rs-api.version>2.0-m16</javax.ws.rs-api.version>
+        <javax.websocket-api.version>1.0</javax.websocket-api.version>
+        <javax.transaction-api.version>1.2</javax.transaction-api.version>
 
 
+        <!-- 前端版本 -->
+        <compass-version>2.2.2-ldh</compass-version>                        <!--css预处理器 -->
+        <easyui.version>1.0.0-SNAPSHOT</easyui.version>
+        <jstl.version>1.2</jstl.version>
+        <dom4j.version>1.6</dom4j.version>
+        <httpclient.version>4.3.6</httpclient.version>
 
-		<dependency>  	<!-- 封装mongoDB*******陈丽娜*********** -->
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>${mongo.version}</version>
-
-		</dependency>
+        <!-- svn版本 -->
+        <svnkit.version>1.8.5
+        </svnkit.version>                    <!--是一个纯 Java 的 SVN 客户端库,使用 SVNKit 无需安装任何 SVN 的客户端,支持各种操作系统. -->
 
 
-		<dependency>  	<!-- 导入导出方法引入包***************2015-2-8 -->
-			<groupId>net.sourceforge.jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>${net.sourceforge.jexcelapi.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>dom4j</groupId>    
-		    <artifactId>dom4j</artifactId>    
-		    <version>${dom4j.version}</version>
-		</dependency>
-		
-        <dependency>
-            <groupId>aopalliance</groupId>
-            <artifactId>aopalliance</artifactId>
-            <version>${aopalliance.version}</version>
-        </dependency>
+        <!--转json的工具版本 -->
+        <jackson-annotations.version>2.5.0-rc1</jackson-annotations.version>
+        <jackson-databind.version>2.4.2</jackson-databind.version>
+        <jackson-dataformat-xml.version>2.4.2</jackson-dataformat-xml.version>
+        <jackson-core.version>2.4.2</jackson-core.version>
+        <jackson-core-asl.version>1.4.0</jackson-core-asl.version>
+        <jackson-jaxrs-json-provider.version>2.8.0</jackson-jaxrs-json-provider.version>
+        <json-lib.version>2.4</json-lib.version>
+        <!--shiro相关的jar的版本 -->
+        <shiro.version>1.2.3</shiro.version>
+        <cas.version>3.2.0</cas.version>
+        <shirocore.version>0.0.1-SNAPSHOT</shirocore.version>
 
-        <!-- http://mvnrepository.com/artifact/commons-lang/commons-lang -->
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>${commons-lang.version}</version>
-        </dependency>
+        <!-- dubbo版本 -->
+        <dubbo.version>2.5.3</dubbo.version>
+        <zookeeper.version>3.4.7</zookeeper.version>
+        <zkclient.version>0.7</zkclient.version>
 
-        <!-- http://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j-api.version}</version>
-		</dependency>
+        <!--jedis-->
+        <jedis.version>2.8.1</jedis.version>
 
-        <!-- http://mvnrepository.com/artifact/org.springframework/spring-beans -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${springframework.version}</version>
-        </dependency>
+        <!-- 其他 -->
+        <pagehelper.version>4.1.4</pagehelper.version>
+        <commons-fileupload.version>1.3.1</commons-fileupload.version>
+        <castor-xml.version>1.3.3</castor-xml.version>
+        <commons-lang3.version>3.4</commons-lang3.version>
+        <alibaba.version>1.2.9</alibaba.version>
+        <commons-codec.version>1.6</commons-codec.version>
+        <jedis.version>2.6.2</jedis.version>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${springframework.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>${jedis.version}</version>
-		</dependency>
-	</dependencies>
+
+        <jboss-transaction-api_1.2_spec.version>1.0.0.Final</jboss-transaction-api_1.2_spec.version>
+
+        <!--hibernate 刘颖 start-->
+        <hibernate.version>4.3.10.Final</hibernate.version>
+        <jboss-transaction-api_1.2_spec.version>1.0.0.Final</jboss-transaction-api_1.2_spec.version>
+        <!--hibernate 刘颖 end-->
+
+
+        <jsf.version>2.0.3</jsf.version>
+
+        <javamelody-core.version>1.58.0</javamelody-core.version>
+
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin> <!-- 编译源码插件 -->
+                <!-- 用来编译位于src/main/java/目录下的主源码 -->
+                <groupId>org.apache.maven.plugins</groupId>  <!-- 项目或者组织的唯一标志 -->
+                <artifactId>maven-compiler-plugin</artifactId> <!-- 项目的通用名称 -->
+                <version>${maven-compiler-plugin.version}</version>
+                <!-- 使用maven-compiler-plugin 指定JDK版本和编码 -->
+                <configuration>    <!-- 通常用于私有不开源的plugin -->
+                    <source>${maven.compiler.source}</source>        <!-- 编译源代码 jdk版本编译 -->
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>      <!-- 用于maven中的文件拷贝 的 编码格式 -->
+                </configuration>
+            </plugin>
+
+            <plugin> <!-- 用来创建Eclipse的项目文件 -->
+
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>${maven-eclipse-plugin.version}</version>
+                <configuration>
+                    <downloadSources>true</downloadSources> <!-- 下载源代码 -->
+                    <downloadJavadocs>true</downloadJavadocs>   <!-- 下载源码文档 -->
+                    <useProjectReferences>true</useProjectReferences>
+                    <wtpversion>2.0</wtpversion>  <!-- 这是eclipse里面的wtp版本 -->
+                    <additionalConfig> <!-- 允许为eclipse配置额外的通用配置文件将被写入到磁盘eclipse运行时 -->
+                        <file>           <!-- http://maven.apache.org/plugins/maven-eclipse-plugin/eclipse-mojo.html -->
+                            <!-- Text file encoding : UTF-8 --> <!-- 构建工程编码问题 -->
+                            <name>.settings/org.eclipse.core.resources.prefs</name>
+                            <content><!-- 指定文件内容 -->
+                                <!-- http://mail-archives.apache.org/mod_mbox/maven-users/200903.mbox/<2E04331034C1794595C880783DA08B58022B45D1@EMAIL03.cerner.net> -->
+                                <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
+                            </content>
+                        </file>
+                        <file>
+                            <!-- New text file line delimiter : Unix -->
+                            <name>.settings/org.eclipse.core.runtime.prefs</name>
+                            <content>
+                                <![CDATA[eclipse.preferences.version=1${line.separator}line.separator=\n${line.separator}]]>
+                            </content>
+                        </file>
+                    </additionalConfig>
+                    <classpathContainers>
+                        <classpathContainer>
+                            org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-${maven.compile.target}
+                        </classpathContainer>
+                    </classpathContainers>
+                </configuration>
+            </plugin>
+
+            <plugin><!-- 打包jar -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addClasspath>true</addClasspath> <!-- Whether to generate a Class-Path manifest entry. The default value is
+								false -->
+                            <useUniqueVersions>false</useUniqueVersions> <!-- Whether to use unique timestamp Snapshot versions rather than -SNAPSHOT
+								versions. The default value is true. -->
+                        </manifest>
+                        <manifestEntries> <!-- A list of key/value pairs to add to the manifest -->
+                            <Build-Time>${maven.build.timestamp}</Build-Time><!-- 工程打包添加时间戳设置 -->
+                            <SCM-Revision>${svn.revision}</SCM-Revision><!-- 工程打包添加版本号 -->
+                            <X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>  <!-- 编译源码使用的jdk版本 -->
+                            <X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK><!--
+								targe编译使用的jdk版本 -->
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin> <!-- war插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml><!-- 设置xml为非必须 -->
+                    <archive> <!-- 用于配置打包过程 -->
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <!--<addClasspath>false</addClasspath> -->
+                            <!--<classpathPrefix>../lib/</classpathPrefix> -->
+                            <!--<useUniqueVersions>false</useUniqueVersions> -->
+                        </manifest>
+                        <manifestEntries>
+                            <Build-Time>${maven.build.timestamp}</Build-Time>
+                            <SCM-Revision>${svn.revision}</SCM-Revision>
+                            <X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
+                            <X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin> <!-- 源码打包插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal> <!-- 表示目标为jar -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin><!-- 测试插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <forkCount>3</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+
+            <plugin><!-- 打包生成doc -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <locale>zh_CN</locale>
+                    <failOnError>false</failOnError>
+                    <quiet>true</quiet>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin><!-- 该网站插件用于生成一个网站项目 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven-site-plugin.version}</version>
+                <configuration><!-- http://maven.apache.org/plugins/maven-site-plugin/stage-mojo.html -->
+                    <stagingDirectory>${site.stagingDirectory}</stagingDirectory> <!-- 标记目录的位置。这需要一个绝对路径 -->
+                    <locales>zh_CN</locales> <!-- 国家标识符号，可用逗号隔开 -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- 用于在site阶段输出报表。特定的maven 插件能输出相应的定制和配置报表。 -->
+    <reporting>
+        <plugins>
+
+            <plugin><!--静态分析工具 -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${findbugs-maven-plugin.version}</version>
+                <configuration>
+                    <findbugsXmlOutput>false</findbugsXmlOutput>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven-surefire-report-plugin.version}</version>
+                <configuration>
+                    <aggregate>true</aggregate>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report-only</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven-project-info-reports-plugin.version}</version>
+                <configuration>
+                    <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>dependencies</report>
+                            <report>distribution-management</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <locale>zh_CN</locale>
+                    <show>public</show>
+                    <failOnError>false</failOnError>
+                    <quiet>true</quiet>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>javadoc</report>
+                            <report>test-javadoc</report>
+                            <report>aggregate</report>
+                            <report>test-aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+
+    <!-- 项目部署信息（会被继承）===begin -->
+
+    <distributionManagement> <!-- 远程部署管理信息 -->
+        <repository> <!--部署项目产生的构件到远程仓库需要的信息 -->
+            <id>releases</id>
+            <name>Nexus Release Repository</name>
+            <url>${nexus.url}/releases/</url>
+        </repository>
+        <snapshotRepository> <!-- 构件的快照部署到哪里？如果没有配置该元素，默认部署到repository元素配置的仓库 -->
+            <id>snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>${nexus.url}/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <!-- 项目部署信息===end -->
+
+    <dependencyManagement>  <!-- 用于父项目配置共同的依赖关系 -->
+        <dependencies>
+
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
+
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+
+            </dependency>
+
+            <dependency> <!-- easyui -->
+                <groupId>com.dmsd</groupId>
+                <artifactId>dmsd-itoo-easyui</artifactId>
+                <version>${easyui.version}</version>
+            </dependency>
+
+            <dependency> <!-- 实体转json忽略 -->
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson-mapper-asl.version}</version>
+
+            </dependency>
+
+            <!-- 添加jackson annotations依赖 ***********start*********** -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.cyrusinnovation</groupId>
+                <artifactId>mockito-groovy-support</artifactId>
+                <version>${mockito-groovy-support.version}</version>
+                <scope>test</scope><!-- 执行单元测试时可用，不会被打包，不会被传递依赖 -->
+            </dependency>
+            <dependency>
+                <groupId>org.tmatesoft.svnkit</groupId>
+                <artifactId>svnkit</artifactId>
+                <version>${svnkit.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>${maven-eclipse-plugin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven-site-plugin.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${findbugs-maven-plugin.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven-surefire-report-plugin.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven-project-info-reports-plugin.version}</version>
+
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
